@@ -113,6 +113,7 @@ class ControllerWindow(QtWidgets.QWidget):
 
         self.createTypeGroupBox()
         self.createHintsGroupBox()
+        self.createAttributesGroupBox()
 
         quitButton = QtWidgets.QPushButton("&Quit")
         quitButton.clicked.connect(self.close)
@@ -124,6 +125,7 @@ class ControllerWindow(QtWidgets.QWidget):
         mainLayout = QtWidgets.QVBoxLayout()
         mainLayout.addWidget(self.typeGroupBox)
         mainLayout.addWidget(self.hintsGroupBox)
+        mainLayout.addWidget(self.attributesGroupBox)
         mainLayout.addLayout(bottomLayout)
         self.setLayout(mainLayout)
 
@@ -184,6 +186,13 @@ class ControllerWindow(QtWidgets.QWidget):
             flags |= QtCore.Qt.CustomizeWindowHint
 
         self.previewWindow.setWindowFlags(flags)
+
+        self.previewWindow.setAttribute(QtCore.Qt.WA_DontShowOnScreen, self.DontShowOnScreenCheckBox.isChecked())
+        self.previewWindow.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents, self.TransparentForMouseEventsCheckBox.isChecked())
+        self.previewWindow.setAttribute(QtCore.Qt.WA_NoSystemBackground, self.NoSystemBackgroundCheckBox.isChecked())
+        self.previewWindow.setAttribute(QtCore.Qt.WA_TranslucentBackground, self.TranslucentBackgroundCheckBox.isChecked())
+        self.previewWindow.setAttribute(QtCore.Qt.WA_X11DoNotAcceptFocus, self.X11DoNotAcceptFocusCheckBox.isChecked())
+        self.previewWindow.setAttribute(QtCore.Qt.WA_ShowWithoutActivating, self.ShowWithoutActivatingCheckBox.isChecked())
 
         pos = self.previewWindow.pos()
 
@@ -258,6 +267,26 @@ class ControllerWindow(QtWidgets.QWidget):
         layout.addWidget(self.windowStaysOnTopCheckBox, 5, 1)
         layout.addWidget(self.windowStaysOnBottomCheckBox, 6, 1)
         self.hintsGroupBox.setLayout(layout)
+
+    def createAttributesGroupBox(self):
+        self.attributesGroupBox = QtWidgets.QGroupBox("Attributes")
+
+        self.DontShowOnScreenCheckBox = self.createCheckBox("Don't show on screen")
+        self.TransparentForMouseEventsCheckBox = self.createCheckBox("Transparent for mouse events")
+        self.NoSystemBackgroundCheckBox = self.createCheckBox("No system background")
+        self.TranslucentBackgroundCheckBox = self.createCheckBox("Translucent background")
+        self.X11DoNotAcceptFocusCheckBox = self.createCheckBox("X11 Do Not Accept Focus")
+        self.ShowWithoutActivatingCheckBox = self.createCheckBox("Show without activating")
+
+        layout = QtWidgets.QGridLayout()
+        layout.addWidget(self.DontShowOnScreenCheckBox, 0, 0)
+        layout.addWidget(self.TransparentForMouseEventsCheckBox, 1, 0)
+        layout.addWidget(self.NoSystemBackgroundCheckBox, 2, 0)
+        layout.addWidget(self.TranslucentBackgroundCheckBox, 3, 0)
+        layout.addWidget(self.X11DoNotAcceptFocusCheckBox, 4, 0)
+        layout.addWidget(self.ShowWithoutActivatingCheckBox, 5, 0)
+
+        self.attributesGroupBox.setLayout(layout)
 
     def createCheckBox(self, text):
         checkBox = QtWidgets.QCheckBox(text)
